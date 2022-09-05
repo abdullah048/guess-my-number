@@ -1,4 +1,12 @@
-import { Alert, StyleSheet, Text, TextInput, View } from 'react-native'
+import {
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  StyleSheet,
+  Text,
+  TextInput,
+  View
+} from 'react-native'
 import React, { useState } from 'react'
 import PrimaryButton from '../components/primary-button'
 import Colors from '../utils/colors'
@@ -7,57 +15,59 @@ import Title from '../components/title'
 const GameStartScreen = ({ setSelectedNumber }) => {
   const [numberInput, setNumberInput] = useState('')
   return (
-    <View style={styles.outerContainer}>
-      <View style={{ marginHorizontal: 23 }}>
-        <Title>Guess My Number?</Title>
-      </View>
-      <View style={styles.inputContainer}>
-        <Text style={styles.text}>Enter a number between 1 & 99</Text>
-        <TextInput
-          style={styles.input}
-          maxLength={2}
-          keyboardType='number-pad'
-          value={numberInput}
-          onChangeText={text => setNumberInput(text)}
-          placeholder='0'
-          placeholderTextColor={Colors.amber}
-        />
-        <View style={styles.buttonContainer}>
-          <PrimaryButton
-            style={styles.button}
-            onPress={() => {
-              setNumberInput('')
-            }}
-          >
-            Reset
-          </PrimaryButton>
-          <PrimaryButton
-            style={styles.button}
-            onPress={() => {
-              const number = parseInt(numberInput)
-              if (isNaN(number) || number <= 0 || number > 99) {
-                Alert.alert(
-                  'Invalid number',
-                  'Number has to be a number between 1 and 99',
-                  [
-                    {
-                      text: 'Okay',
-                      style: 'destructive',
-                      onPress: () => setNumberInput('')
-                    }
-                  ]
-                )
-                return
-              } else {
-                setSelectedNumber(numberInput)
-              }
-            }}
-          >
-            Confirm
-          </PrimaryButton>
+    <KeyboardAvoidingView behavior='position'>
+      <View style={styles.outerContainer}>
+        <View style={{ marginHorizontal: 23 }}>
+          <Title>Guess My Number?</Title>
+        </View>
+        <View style={styles.inputContainer}>
+          <Text style={styles.text}>Enter a number between 1 & 99</Text>
+          <TextInput
+            style={styles.input}
+            maxLength={2}
+            keyboardType='number-pad'
+            value={numberInput}
+            onChangeText={text => setNumberInput(text)}
+            placeholder='0'
+            placeholderTextColor={Colors.amber}
+          />
+          <View style={styles.buttonContainer}>
+            <PrimaryButton
+              style={styles.button}
+              onPress={() => {
+                setNumberInput('')
+              }}
+            >
+              Reset
+            </PrimaryButton>
+            <PrimaryButton
+              style={styles.button}
+              onPress={() => {
+                const number = parseInt(numberInput)
+                if (isNaN(number) || number <= 0 || number > 99) {
+                  Alert.alert(
+                    'Invalid number',
+                    'Number has to be a number between 1 and 99',
+                    [
+                      {
+                        text: 'Okay',
+                        style: 'destructive',
+                        onPress: () => setNumberInput('')
+                      }
+                    ]
+                  )
+                  return
+                } else {
+                  setSelectedNumber(numberInput)
+                }
+              }}
+            >
+              Confirm
+            </PrimaryButton>
+          </View>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -105,6 +115,13 @@ const styles = StyleSheet.create({
     marginBottom: 7
   },
   outerContainer: {
-    marginTop: 100
+    ...Platform.select({
+      android: {
+        marginTop: 200
+      },
+      ios: {
+        marginTop: 50
+      }
+    })
   }
 })

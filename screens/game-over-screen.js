@@ -13,11 +13,7 @@ const GameOverScreen = ({
   return (
     <View style={styles.container}>
       <Title>Game Over !</Title>
-      <Image
-        source={require('../assets/success.png')}
-        style={styles.image}
-        resizeMode='contain'
-      />
+      <Image source={require('../assets/success.png')} style={styles.image} />
       <Text style={styles.outerText}>
         Your phone needed <Text style={styles.innerText}>{roundsNumber}</Text>{' '}
         rounds to guess the number{' '}
